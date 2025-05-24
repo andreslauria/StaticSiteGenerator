@@ -19,6 +19,15 @@ class TestTextNode(unittest.TestCase):
         html_node = TextNode.text_node_to_html_node(node)
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "This is a text node")
+        
+    def test_split_node(self):
+        node = TextNode("This is text with a `code block` word", TextType.TEXT)
+        new_nodes = TextNode.split_nodes_delimiter([node], "`", TextType.CODE)
+        result =  [TextNode("This is text with a ", TextType.TEXT),
+                   TextNode("code block", TextType.CODE),
+                   TextNode(" word", TextType.TEXT),
+                   ]
+        self.assertEqual(new_nodes, result)
 
 
 if __name__ == "__main__":

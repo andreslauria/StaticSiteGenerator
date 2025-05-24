@@ -24,6 +24,7 @@ class TextNode:
     def __repr__(self):
         return f"TextNode({self.text},{self.text_type.value},{self.url})"
     
+    @staticmethod
     def text_node_to_html_node(text_node):
         if not isinstance(text_node.text_type, TextType):
             raise Exception("TYPE ERROR")
@@ -42,9 +43,25 @@ class TextNode:
                 return LeafNode("img","",text_node.props)
             case _:
                 raise ValueError
-    
+    @staticmethod
     def split_nodes_delimiter(old_nodes, delimiter, text_type):
-        for oldies in old_nodes:
+        not_text_list=[]
+        final_lst=[]
+        for oldies in old_nodes:         
             if oldies.text_type == TextType.TEXT:
-                oldies.text.split(delimiter)
-                
+                if oldies.text.count(delimiter) % 2 == 0:
+                    lst = oldies.text.split(delimiter)  
+                    for i in range(len(lst)):
+                        if lst[i]  != "":
+                            if i % 2 == 1:
+                                final_lst.append(TextNode(lst[i],text_type))
+                            else:
+                                final_lst.append(TextNode(lst[i],TextType.TEXT))
+                else:
+                    raise Exception("invalid markdown syntax")
+            else:
+                    not_text_list.append(oldies)             
+        final_lst.extend(not_text_list)
+        return final_lst
+        
+    
