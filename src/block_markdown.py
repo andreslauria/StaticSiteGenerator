@@ -22,7 +22,6 @@ def markdown_to_html_node(markdown: str):
 
     # parse blocks into HTML
     for block in blocks:
-        print(block)
         block_type = block_to_block_type(block)
         node = block_to_html_node(block, block_type)
         children.append(node)
